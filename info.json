@@ -1,0 +1,10 @@
+{
+    "Id": "InventoryTweaks",
+    "DisplayName": "InventoryTweaks",
+    "Author": "Hambeard",
+    "Version": "1.0.0",
+    "ManagerVersion": "0.18.0",
+    "Requirements": [],
+    "AssemblyName": "InventoryTweaks.dll",
+    "EntryMethod": "InventoryTweaks.Main.Load"
+}
