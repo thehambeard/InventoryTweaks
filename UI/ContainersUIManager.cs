@@ -22,6 +22,10 @@ namespace InventoryTweaks.UI
         public  ContainerTypeUIManager scrollManagerUI { get; private set; }
         private CanvasGroup _canvasGroup;
         private GameObject _togglePanel;
+        private ButtonWrapper _buttonScrolls;
+        private ButtonWrapper _buttonWands;
+        private ButtonWrapper _buttonPotions;
+        private ButtonWrapper _buttonTrash;
         public static ContainersUIManager CreateObject()
         {
             UICommon uiCommon = Game.Instance.UI.Common;
@@ -92,8 +96,17 @@ namespace InventoryTweaks.UI
             _togglePanel = gameObject.transform.Find("TweakTogglePanel").gameObject;
             _togglePanel.SetActive(true);
 
+            _buttonScrolls = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Scrolls"), "Scrolls");
+            _buttonWands = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Wands"), "Wands");
+            _buttonPotions = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Potions"), "Potions");
+            _buttonTrash = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Trash"), "Trash");
             _canvasGroup = gameObject.GetComponent<CanvasGroup>();
             _canvasGroup.alpha = 1f;
+        }
+
+        private void HandleScrollClick()
+        {
+
         }
 
         void Update()
@@ -107,60 +120,62 @@ namespace InventoryTweaks.UI
             private readonly Color _enableColor = Color.white;
             private readonly Color _disableColor = new Color(0.7f, 0.8f, 1f);
 
-            private readonly ButtonPF _button;
+            private readonly RectTransform _button;
             private readonly TextMeshProUGUI _textMesh;
             private readonly Image _image;
             private readonly Sprite _defaultSprite;
             private readonly SpriteState _defaultSpriteState;
             private readonly SpriteState _pressedSpriteState;
 
-            public bool IsInteractable
+            //public bool IsInteractable
+            //{
+            //    get => _button.interactable;
+            //    set
+            //    {
+            //        if (_button.interactable != value)
+            //        {
+            //            _button.interactable = value;
+            //            _textMesh.color = value ? _enableColor : _disableColor;
+            //        }
+            //    }
+            //}
+
+
+
+            //public bool IsPressed
+            //{
+            //    get => _isPressed;
+            //    set
+            //    {
+            //        if (_isPressed != value)
+            //        {
+            //            _isPressed = value;
+            //            if (value)
+            //            {
+            //                _button.spriteState = _pressedSpriteState;
+            //                _image.sprite = _pressedSpriteState.pressedSprite;
+            //            }
+            //            else
+            //            {
+            //                _button.spriteState = _defaultSpriteState;
+            //                _image.sprite = _defaultSprite;
+            //            }
+            //        }
+            //    }
+            //}
+
+            public ButtonWrapper(RectTransform button, string text)
             {
-                get => _button.interactable;
-                set
-                {
-                    if (_button.interactable != value)
-                    {
-                        _button.interactable = value;
-                        _textMesh.color = value ? _enableColor : _disableColor;
-                    }
-                }
-            }
-
-
-
-            public bool IsPressed
-            {
-                get => _isPressed;
-                set
-                {
-                    if (_isPressed != value)
-                    {
-                        _isPressed = value;
-                        if (value)
-                        {
-                            _button.spriteState = _pressedSpriteState;
-                            _image.sprite = _pressedSpriteState.pressedSprite;
-                        }
-                        else
-                        {
-                            _button.spriteState = _defaultSpriteState;
-                            _image.sprite = _defaultSprite;
-                        }
-                    }
-                }
-            }
-
-            public ButtonWrapper(ButtonPF button, string text, Action onClick)
-            {
+                Main.Mod.Debug(MethodBase.GetCurrentMethod());
                 _button = button;
-                _button.onClick = new Button.ButtonClickedEvent();
-                _button.onClick.AddListener(new UnityAction(onClick));
+                //_button.onClick = new Button.ButtonClickedEvent();
+                //_button.onClick.AddListener(new UnityAction(onClick));
                 _textMesh = _button.GetComponentInChildren<TextMeshProUGUI>();
+                Main.Mod.Debug("Text" + _textMesh);
                 //_textMesh.fontSize = 20;
                 //_textMesh.fontSizeMax = 72;
                 //_textMesh.fontSizeMin = 18;
-                //_textMesh.text = text;
+                _textMesh.text = text;
                 //_textMesh.color = _button.interactable ? _enableColor : _disableColor;
                 //_image = _button.gameObject.GetComponent<Image>();
                 //_defaultSprite = _image.sprite;
