@@ -17,15 +17,17 @@ using Kingmaker.Items;
 using TMPro;
 using Steamworks;
 
+
 namespace InventoryTweaks.UI
 {
-    public class ScrollLevelElementManager : MonoBehaviour
+    public class LevelElementManager : MonoBehaviour
     {
         private TextMeshProUGUI _label;
         public int Index { get; set; }
+        
         private bool isDirty = true;
        
-        public static ScrollLevelElementManager CreateObject()
+        public static LevelElementManager CreateObject()
         {
             GameObject sourceObject = Game.Instance.UI.Common?.transform.Find("ServiceWindow/Encyclopedia/HierarchyView/Body/Scroll View/Viewport/Content/ChapterElement").gameObject;
 
@@ -40,12 +42,13 @@ namespace InventoryTweaks.UI
             levelElement.transform.Find("Content").gameObject.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(25, 51, 0, 0);
             
 
-            return levelElement.AddComponent<ScrollLevelElementManager>();
+            return levelElement.AddComponent<LevelElementManager>();
         }
 
         void Awake()
         {
             _label = gameObject.transform.Find("Header/Label").GetComponent<TextMeshProUGUI>();
+            
             //gameObject.transform.Find("Content").gameObject.SetActive(false);
         }
 
@@ -69,7 +72,7 @@ namespace InventoryTweaks.UI
         {
             if (isDirty)
             {
-                _label.text = $"Level {Index + 1} Scrolls";
+                _label.text = $"Level {Index + 1}";
                 _label.ForceMeshUpdate();
                 isDirty = false;
             }

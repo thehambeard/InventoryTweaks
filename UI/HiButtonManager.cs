@@ -19,7 +19,7 @@ using static InventoryTweaks.Common;
 
 namespace InventoryTweaks.UI
 {
-    class ScrollButtonManager : MonoBehaviour
+    class HiButtonManager : MonoBehaviour
     {
         private ButtonPF _button;
         private TextMeshProUGUI _label;
@@ -32,7 +32,7 @@ namespace InventoryTweaks.UI
         private string _previousText;
         private float _width;
 
-        public static ScrollButtonManager CreateObject()
+        public static HiButtonManager CreateObject()
         {
             GameObject sourceObject = Game.Instance.UI.Common?.transform
                 .Find("ServiceWindow/Journal").GetComponent<JournalQuestLog>().Chapter.QuestNaviElement.gameObject;
@@ -40,17 +40,17 @@ namespace InventoryTweaks.UI
             if (!sourceObject)
                 return null;
 
-            GameObject scrollButton = Instantiate(sourceObject);
-            RectTransform rectScrollButton = (RectTransform)scrollButton.transform;
-            scrollButton.name = "ScrollButton";
-            scrollButton.GetComponent<ButtonPF>().onClick = new Button.ButtonClickedEvent();
-            DestroyImmediate(scrollButton.GetComponent<JournalQuestNaviElement>());
+            GameObject containerButton = Instantiate(sourceObject);
+            RectTransform rectScrollButton = (RectTransform)containerButton.transform;
+            containerButton.name = "ScrollButton";
+            containerButton.GetComponent<ButtonPF>().onClick = new Button.ButtonClickedEvent();
+            DestroyImmediate(containerButton.GetComponent<JournalQuestNaviElement>());
             rectScrollButton.Find("Complied").SafeDestroy();
             rectScrollButton.Find("New").SafeDestroy();
             rectScrollButton.Find("NeedToAttention").SafeDestroy();
             rectScrollButton.Find("Failed").SafeDestroy();
             
-            return scrollButton.AddComponent<ScrollButtonManager>();
+            return containerButton.AddComponent<HiButtonManager>();
         }
 
         void Awake()

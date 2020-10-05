@@ -12,22 +12,22 @@ using static InventoryTweaks.Main;
 
 namespace InventoryTweaks.UI
 {
-    class ScrollCaseUIController : IModEventHandler, ISceneHandler
+    class ContainersUIController : IModEventHandler, ISceneHandler
     {
         public int Priority => 400;
 
-        public ScrollCaseUIManager ContainerUI { get; private set; }
+        public ContainersUIManager ContainersUI { get; private set; }
 
         public void Attach()
         {
-            if (!ContainerUI)
-                ContainerUI = ScrollCaseUIManager.CreateObject();
+            if (!ContainersUI)
+                ContainersUI = ContainersUIManager.CreateObject();
         }
 
         public void Detach()
         {
-            ContainerUI.SafeDestroy();
-            ContainerUI = null;
+            ContainersUI.SafeDestroy();
+            ContainersUI = null;
         }
 
         public void Update()
@@ -40,11 +40,11 @@ namespace InventoryTweaks.UI
         public void Clear()
         {
             Transform tweakContainer;
-            while (tweakContainer = Game.Instance.UI.Common.transform.Find("HUDLayout/TweakContainer"))
+            while (tweakContainer = Game.Instance.UI.Common.transform.Find("HUDLayout/TweakContainers"))
             {
                 tweakContainer.SafeDestroy();
             }
-            ContainerUI = null;
+            ContainersUI = null;
         }
 #endif
 

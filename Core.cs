@@ -14,7 +14,7 @@ namespace InventoryTweaks
         IModEventHandler
     {
         public int Priority => 200;
-        public ScrollCaseUIController UI { get; internal set; }
+        public ContainersUIController UI { get; internal set; }
 
         private Version resetAfter = new Version(0, 0, 0);
 

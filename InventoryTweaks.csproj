@@ -108,16 +108,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="UI\ScrollButtonManager.cs" />
-    <Compile Include="UI\ScrollCaseUIManager.cs" />
-    <Compile Include="UI\ScrollCaseUIController.cs" />
+    <Compile Include="UI\ContainersUIManager.cs" />
+    <Compile Include="UI\HiButtonManager.cs" />
+    <Compile Include="UI\ContainerTypeUIManager.cs" />
+    <Compile Include="UI\ContainersUIController.cs" />
     <Compile Include="Tweaks\BackPack.cs" />
     <Compile Include="Tweaks\Container.cs" />
     <Compile Include="Tweaks\ItemStacking.cs" />
     <Compile Include="Tweaks\PotionCase.cs" />
     <Compile Include="Tweaks\ScrollCase.cs" />
     <Compile Include="Tweaks\TrashBag.cs" />
-    <Compile Include="UI\ScrollLevelElementManager.cs" />
+    <Compile Include="UI\LevelElementManager.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="Utilities\ModCheck.cs" />
