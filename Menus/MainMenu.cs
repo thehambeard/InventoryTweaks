@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InventoryTweaks.Tweaks;
+using InventoryTweaks.Utilities;
 using ModMaker;
-using ModMaker.Utility;
 using UnityModManagerNet;
-using UnityEngine;
 using GL = UnityEngine.GUILayout;
-using Kingmaker;
-using Kingmaker.Blueprints.Items.Equipment;
+
 
 namespace InventoryTweaks.Menus
 {
@@ -19,28 +13,13 @@ namespace InventoryTweaks.Menus
 
         public int Priority => 100;
 
-        string path = "ServiceWindow/Encyclopedia/HierarchyView/TweakContainer";
-
         public void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            path = GL.TextField(path);
-            if (GL.Button("Clear", GL.ExpandWidth(false)))
+            GL.Label("This will toggle items to stack in your inventory, such as multiple suits of armor will take up one slot. Note: Toggling off will remove the number count for items stacked, split the items before turning stacking off.  Turning stack back on will restore the count.  Items not already stacked in your inventory will not auto-stack, they can be manually stacked and stacking will be automatic from the point you turn stacking on.");
+            if (GL.Button($"Toggled: {SettingsWrapper.ForceStacking}", GL.ExpandWidth(false)))
             {
-                Transform tweakContainer;
-                while (tweakContainer = Game.Instance.UI.Common.transform.Find(path))
-                {
-                    tweakContainer.SafeDestroy();
-                }
+                ItemStacking.ToggleForceStacking();
             }
-            if (GL.Button("Items", GL.ExpandWidth(false)))
-            {
-                foreach (var item in Game.Instance.Player.Inventory.Where(c => (c.Blueprint as BlueprintItemEquipmentUsable != null) && (c.Blueprint as BlueprintItemEquipmentUsable).Type == UsableItemType.Scroll))
-                {
-                    if (item != null)
-                        Main.Mod.Debug(item);
-                }
-            }
-                    
         }
     }
 }

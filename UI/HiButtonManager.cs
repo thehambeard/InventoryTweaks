@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModMaker;
+﻿using Kingmaker;
+using Kingmaker.Items;
+using Kingmaker.PubSubSystem;
+using Kingmaker.UI.Common;
+using Kingmaker.UI.Constructor;
+using Kingmaker.UI.Group;
+using Kingmaker.UI.Journal;
+using Kingmaker.UnitLogic.Abilities.Blueprints;
+using Kingmaker.UnitLogic.Commands;
 using ModMaker.Utility;
+using TMPro;
 using UnityEngine;
-using Kingmaker;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using static InventoryTweaks.Main;
-using Kingmaker.UI.Journal;
-using Kingmaker.UI.Constructor;
-using Kingmaker.PubSubSystem;
-using UnityEngine.Events;
-using Kingmaker.Items;
-using TMPro;
-using static InventoryTweaks.Common;
 
 namespace InventoryTweaks.UI
 {
@@ -49,7 +46,7 @@ namespace InventoryTweaks.UI
             rectScrollButton.Find("New").SafeDestroy();
             rectScrollButton.Find("NeedToAttention").SafeDestroy();
             rectScrollButton.Find("Failed").SafeDestroy();
-            
+
             return containerButton.AddComponent<HiButtonManager>();
         }
 
@@ -63,11 +60,35 @@ namespace InventoryTweaks.UI
             _button.OnExit.AddListener(new UnityAction(HandleOnExit));
 
             _label = gameObject.transform.Find("HeaderInActive").gameObject.GetComponent<TextMeshProUGUI>();
-            
+        }
+
+        private void FixMutlipleSelected()
+        {
+            int multi = 0;
+            var ginst = Game.Instance;
+            var sman = ginst.UI.SelectionManager;
+            foreach (var unit in ginst.Player.AllCharacters)
+            {
+                if (sman.IsSelected(unit)) multi++;
+            }
+            if (multi == 0 || multi > 1) sman.SwitchSelectionUnitInGroup(ginst.Player.MainCharacter);
         }
 
         private void HandleOnClick()
         {
+            FixMutlipleSelected();
+            var wielder = UIUtility.GetCurrentCharacter().Descriptor;
+
+            Mod.Debug(GroupController.Instance.GetCurrentCharacter());
+            Item.OnDidEquipped(wielder);
+            if (Item.Ability.Data.TargetAnchor != AbilityTargetAnchor.Owner)
+            {
+                Game.Instance.SelectedAbilityHandler.SetAbility(Item.Ability.Data);
+            }
+            else
+            {
+                UIUtility.GetCurrentCharacter().Commands.Run(new UnitUseAbility(Item.Ability.Data, UIUtility.GetCurrentCharacter()));
+            }
         }
 
         private void HandleOnRightClick()

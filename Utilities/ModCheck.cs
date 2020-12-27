@@ -1,5 +1,5 @@
-﻿using UnityModManagerNet;
-using System;
+﻿using System;
+using UnityModManagerNet;
 
 namespace InventoryTweaks.Utilities
 {
@@ -10,19 +10,19 @@ namespace InventoryTweaks.Utilities
         {
             modEntry = UnityModManager.FindMod(id);
         }
-		public bool IsActive()
-		{
-			return modEntry != null && modEntry.Assembly != null && modEntry.Active;
-		}
+        public bool IsActive()
+        {
+            return modEntry != null && modEntry.Assembly != null && modEntry.Active;
+        }
 
-		public bool IsInstalled()
-		{
-			return modEntry != null;
-		}
+        public bool IsInstalled()
+        {
+            return modEntry != null;
+        }
 
-		public Version Version()
-		{
-			return new Version((modEntry != null) ? modEntry.Info.Version : "0");
-		}
-	}
+        public Version Version()
+        {
+            return new Version((modEntry != null) ? modEntry.Info.Version : "0");
+        }
+    }
 }

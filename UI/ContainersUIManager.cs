@@ -1,25 +1,21 @@
-﻿using Kingmaker.UI;
-using Kingmaker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
+﻿using Kingmaker;
 using Kingmaker.Blueprints.Items.Equipment;
+using Kingmaker.UI;
 using Kingmaker.UI.Constructor;
-using TMPro;
-using UnityEngine.UI;
-using UnityEngine.Events;
-using System.Reflection;
 using Kingmaker.UI.Log;
+using System.Reflection;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace InventoryTweaks.UI
 {
     class ContainersUIManager : MonoBehaviour
     {
-        public  ContainerTypeUIManager scrollManagerUI { get; private set; }
+        public ContainerTypeUIManager ScrollManagerUI { get; private set; }
+        public ContainerTypeUIManager PotionManagerUI { get; private set; }
+        public ContainerTypeUIManager WandManagerUI { get; private set; }
         private CanvasGroup _canvasGroup;
         private GameObject _togglePanel;
         private ButtonWrapper _buttonScrolls;
@@ -38,16 +34,16 @@ namespace InventoryTweaks.UI
             GameObject containers = new GameObject("TweakContainers", typeof(RectTransform), typeof(CanvasGroup));
             containers.transform.SetParent(hud.transform);
             containers.transform.SetSiblingIndex(0);
-            
+
             RectTransform rectTweakContainer = (RectTransform)containers.transform;
             rectTweakContainer.anchorMin = new Vector2(0f, 1f);
             rectTweakContainer.anchorMax = new Vector2(0f, 1f);
             rectTweakContainer.pivot = new Vector2(0f, 0f);
             rectTweakContainer.position = Camera.current.ScreenToWorldPoint
-                (new Vector3(Screen.width * 0.285f, Screen.height * 0.7f, Camera.current.WorldToScreenPoint(hud.transform.position).z));
+                (new Vector3(Screen.width * 0.27f, Screen.height * 0.61f, Camera.current.WorldToScreenPoint(hud.transform.position).z));
             rectTweakContainer.position -= rectTweakContainer.forward;
             rectTweakContainer.rotation = Quaternion.identity;
-            rectTweakContainer.localScale = new Vector3(.9f, .9f, .9f);
+            rectTweakContainer.localScale = new Vector3(.8f, .8f, .8f);
 
             //initialize buttons
             GameObject togglePanel = Instantiate(tooglePanel, containers.transform, false);
@@ -58,7 +54,7 @@ namespace InventoryTweaks.UI
             rectButton.anchorMax = new Vector2(0f, 1f);
             rectButton.pivot = new Vector2(0f, 0f);
             rectButton.localPosition = new Vector3(0 - rectButton.rect.width * 1.08f, 0 - rectTweakContainer.rect.yMax * 6.85f, 0);
-            
+
             rectButton.rotation = Quaternion.identity;
             DestroyImmediate(togglePanel.GetComponent<LogToggleManager>());
             DestroyImmediate(togglePanel.GetComponent<Image>());
@@ -66,7 +62,8 @@ namespace InventoryTweaks.UI
             void setToggleButtons(GameObject button, string name)
             {
                 button.name = name;
-
+                DestroyImmediate(button.GetComponent<Toggle>());
+                button.AddComponent<ButtonPF>();
             }
 
             GameObject toggleScrolls = togglePanel.transform.Find("ToogleAll").gameObject;
@@ -76,7 +73,8 @@ namespace InventoryTweaks.UI
             GameObject toggleWands = togglePanel.transform.Find("ToogleCombat").gameObject;
             setToggleButtons(toggleWands, "Wands");
             GameObject toggleTrash = togglePanel.transform.Find("ToogleDialogue").gameObject;
-            setToggleButtons(toggleTrash, "Trash");
+            DestroyImmediate(toggleTrash); //remove in future developement
+            //setToggleButtons(toggleTrash, "Trash");
 
             return containers.AddComponent<ContainersUIManager>();
         }
@@ -86,22 +84,68 @@ namespace InventoryTweaks.UI
             Main.Mod.Debug(MethodBase.GetCurrentMethod());
 
             //scroll ui
-            scrollManagerUI = ContainerTypeUIManager.CreateObject();
-            scrollManagerUI.UseableType = UsableItemType.Scroll;
-            var rectScroll = (RectTransform)scrollManagerUI.transform;
+            ScrollManagerUI = ContainerTypeUIManager.CreateObject();
+            ScrollManagerUI.UseableType = UsableItemType.Scroll;
+            var rectScroll = (RectTransform)ScrollManagerUI.transform;
             rectScroll.SetParent(gameObject.transform);
             rectScroll.SetSiblingIndex(0);
-            rectScroll.gameObject.SetActive(true);
+            rectScroll.gameObject.SetActive(false);
+
+            //Potion ui
+            PotionManagerUI = ContainerTypeUIManager.CreateObject();
+            PotionManagerUI.UseableType = UsableItemType.Potion;
+            var rectPotion = (RectTransform)PotionManagerUI.transform;
+            rectPotion.SetParent(gameObject.transform);
+            rectPotion.SetSiblingIndex(0);
+            rectPotion.gameObject.SetActive(false);
+
+            //Wand ui
+            WandManagerUI = ContainerTypeUIManager.CreateObject();
+            WandManagerUI.UseableType = UsableItemType.Wand;
+            var rectWand = (RectTransform)WandManagerUI.transform;
+            rectWand.SetParent(gameObject.transform);
+            rectWand.SetSiblingIndex(0);
+            rectWand.gameObject.SetActive(false);
 
             _togglePanel = gameObject.transform.Find("TweakTogglePanel").gameObject;
             _togglePanel.SetActive(true);
 
-            _buttonScrolls = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Scrolls"), "Scrolls");
-            _buttonWands = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Wands"), "Wands");
-            _buttonPotions = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Potions"), "Potions");
-            _buttonTrash = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Trash"), "Trash");
+            _buttonScrolls = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Scrolls"), "Scrolls", HandleToggleScrolls);
+            _buttonWands = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Wands"), "Wands", HandleToggleWands);
+            _buttonPotions = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Potions"), "Potions", HandleTogglePotions);
+            //_buttonTrash = new ButtonWrapper((RectTransform)_togglePanel.transform.Find("Trash"), "Trash", HandleToggleTrash);
             _canvasGroup = gameObject.GetComponent<CanvasGroup>();
             _canvasGroup.alpha = 1f;
+        }
+
+        private void HandleToggleScrolls()
+        {
+            ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = !_buttonScrolls.ButtonToggle);
+            WandManagerUI.transform.gameObject.SetActive(false);
+            PotionManagerUI.transform.gameObject.SetActive(false);
+            //TrashManagerUI.transform.gameObject.SetActive(false);
+        }
+
+        private void HandleToggleWands()
+        {
+            ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = false);
+            WandManagerUI.transform.gameObject.SetActive(true);
+            PotionManagerUI.transform.gameObject.SetActive(false);
+            //TrashManagerUI.transform.gameObject.SetActive(false);
+        }
+        private void HandleTogglePotions()
+        {
+            ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = false);
+            WandManagerUI.transform.gameObject.SetActive(false);
+            PotionManagerUI.transform.gameObject.SetActive(true);
+            //TrashManagerUI.transform.gameObject.SetActive(false);
+        }
+        private void HandleToggleTrash()
+        {
+            ScrollManagerUI.transform.gameObject.SetActive(false);
+            WandManagerUI.transform.gameObject.SetActive(false);
+            PotionManagerUI.transform.gameObject.SetActive(false);
+            //TrashManagerUI.transform.gameObject.SetActive(true);
         }
 
         private void HandleScrollClick()
@@ -116,16 +160,18 @@ namespace InventoryTweaks.UI
         private class ButtonWrapper
         {
             private bool _isPressed;
-
+            public bool ButtonToggle { get; set; }
             private readonly Color _enableColor = Color.white;
             private readonly Color _disableColor = new Color(0.7f, 0.8f, 1f);
-
             private readonly RectTransform _button;
+            private readonly ButtonPF _toggle;
             private readonly TextMeshProUGUI _textMesh;
             private readonly Image _image;
             private readonly Sprite _defaultSprite;
             private readonly SpriteState _defaultSpriteState;
             private readonly SpriteState _pressedSpriteState;
+
+
 
             //public bool IsInteractable
             //{
@@ -164,14 +210,16 @@ namespace InventoryTweaks.UI
             //    }
             //}
 
-            public ButtonWrapper(RectTransform button, string text)
+            public ButtonWrapper(RectTransform button, string text, UnityAction OnToggle)
             {
                 Main.Mod.Debug(MethodBase.GetCurrentMethod());
+                this.ButtonToggle = false;
                 _button = button;
-                //_button.onClick = new Button.ButtonClickedEvent();
+                _toggle = _button.GetComponent<ButtonPF>();
+                _toggle.onClick.AddListener(new UnityAction(OnToggle));
+                //_button = new Button.ButtonClickedEvent();
                 //_button.onClick.AddListener(new UnityAction(onClick));
                 _textMesh = _button.GetComponentInChildren<TextMeshProUGUI>();
-                Main.Mod.Debug("Text" + _textMesh);
                 //_textMesh.fontSize = 20;
                 //_textMesh.fontSizeMax = 72;
                 //_textMesh.fontSizeMin = 18;

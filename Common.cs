@@ -1,6 +1,4 @@
 ﻿using System;
-using Kingmaker.Blueprints;
-using ModMaker;
 
 namespace InventoryTweaks
 {
@@ -10,9 +8,9 @@ namespace InventoryTweaks
         public static readonly Version BVMaxVersion = new Version(2, 0, 7);
 
         public static float UI_SCALE = 0.8f;
-        
+
         public static bool BVModEnabled;
 
-        
+
     }
 }

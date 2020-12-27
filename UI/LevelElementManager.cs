@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModMaker;
-using ModMaker.Utility;
-using UnityEngine;
-using Kingmaker;
-using UnityEngine.UI;
-using static InventoryTweaks.Main;
-using Kingmaker.UI.Journal;
-using Kingmaker.UI.Constructor;
+﻿using Kingmaker;
 using Kingmaker.PubSubSystem;
-using UnityEngine.Events;
-using Kingmaker.Items;
+using ModMaker.Utility;
 using TMPro;
-using Steamworks;
-
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace InventoryTweaks.UI
 {
@@ -24,9 +11,9 @@ namespace InventoryTweaks.UI
     {
         private TextMeshProUGUI _label;
         public int Index { get; set; }
-        
+
         private bool isDirty = true;
-       
+
         public static LevelElementManager CreateObject()
         {
             GameObject sourceObject = Game.Instance.UI.Common?.transform.Find("ServiceWindow/Encyclopedia/HierarchyView/Body/Scroll View/Viewport/Content/ChapterElement").gameObject;
@@ -40,7 +27,7 @@ namespace InventoryTweaks.UI
             levelElement.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(51, 51, 0, 0);
             levelElement.transform.Find("Header").gameObject.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(51, 51, 0, 0);
             levelElement.transform.Find("Content").gameObject.GetComponent<VerticalLayoutGroup>().padding = new RectOffset(25, 51, 0, 0);
-            
+
 
             return levelElement.AddComponent<LevelElementManager>();
         }
@@ -48,7 +35,7 @@ namespace InventoryTweaks.UI
         void Awake()
         {
             _label = gameObject.transform.Find("Header/Label").GetComponent<TextMeshProUGUI>();
-            
+
             //gameObject.transform.Find("Content").gameObject.SetActive(false);
         }
 
@@ -77,7 +64,7 @@ namespace InventoryTweaks.UI
                 isDirty = false;
             }
         }
-        
+
         void OnEnable()
         {
             EventBus.Subscribe(this);

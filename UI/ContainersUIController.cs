@@ -1,13 +1,9 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
-using UnityEngine.UI;
-using Kingmaker;
-using Kingmaker.UI.ServiceWindow;
-using UnityModManagerNet;
+﻿using Kingmaker;
 using Kingmaker.PubSubSystem;
 using ModMaker;
 using ModMaker.Utility;
+using System.Reflection;
+using UnityEngine;
 using static InventoryTweaks.Main;
 
 namespace InventoryTweaks.UI
@@ -63,8 +59,9 @@ namespace InventoryTweaks.UI
             Mod.Debug(MethodBase.GetCurrentMethod());
 
             EventBus.Unsubscribe(this);
-
+#if DEBUG
             Clear();
+#endif
             Detach();
             Mod.Core.UI = null;
         }

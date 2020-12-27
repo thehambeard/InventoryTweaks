@@ -1,12 +1,12 @@
-﻿using InventoryTweaks.Utilities;
+﻿using InventoryTweaks.UI;
+using InventoryTweaks.Utilities;
 using Kingmaker.PubSubSystem;
 using ModMaker;
 using System;
 using System.Reflection;
-using static InventoryTweaks.Main;
 using static InventoryTweaks.Common;
+using static InventoryTweaks.Main;
 using static InventoryTweaks.Utilities.SettingsWrapper;
-using InventoryTweaks.UI;
 
 namespace InventoryTweaks
 {
@@ -21,22 +21,22 @@ namespace InventoryTweaks
         public void ResetSettings()
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
-            Mod.ResetSettings();
             Mod.Settings.lastModVersion = Mod.Version.ToString();
             LocalizationFileName = Local.FileName;
+            ForceStacking = true;
         }
 
         public void HandleModEnable()
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
             ModCheck bvcheck = new ModCheck("BetterVendors");
-            BVModEnabled = bvcheck.IsInstalled() && bvcheck.IsActive() && ((bvcheck.Version() >= BVMinVersion) || bvcheck.Version() <= BVMaxVersion) ;
+            BVModEnabled = bvcheck.IsInstalled() && bvcheck.IsActive() && ((bvcheck.Version() >= BVMinVersion) || bvcheck.Version() <= BVMaxVersion);
             if (!string.IsNullOrEmpty(LocalizationFileName))
             {
                 Local.Import(LocalizationFileName, e => Mod.Error(e));
                 LocalizationFileName = Local.FileName;
             }
-            if (!Version.TryParse(Mod.Settings.lastModVersion, out Version version)/* || version > resetAfter */)
+            if (!Version.TryParse(Mod.Settings.lastModVersion, out Version version) || version > resetAfter)
                 ResetSettings();
             else
             {

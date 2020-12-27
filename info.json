@@ -2,8 +2,8 @@
     "Id": "InventoryTweaks",
     "DisplayName": "InventoryTweaks",
     "Author": "Hambeard",
-    "Version": "1.0.0",
-    "ManagerVersion": "0.18.0",
+    "Version": "0.1.0",
+    "ManagerVersion": "0.22.1",
     "Requirements": [],
     "AssemblyName": "InventoryTweaks.dll",
     "EntryMethod": "InventoryTweaks.Main.Load"

@@ -1,19 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kingmaker;
-
-using UnityEngine;
+﻿using Kingmaker;
+using Kingmaker.PubSubSystem;
+using ModMaker;
+using static InventoryTweaks.Utilities.SettingsWrapper;
 
 namespace InventoryTweaks.Tweaks
 {
-    class ItemStacking
+    public class ItemStacking : IModEventHandler, IAreaLoadingStagesHandler
     {
-        public void ToggleForceStacking()
+        public int Priority => 100;
+
+        public void OnAreaLoadingComplete()
         {
-            Game.Instance.Player.Inventory.ForceStackable = !Game.Instance.Player.Inventory.ForceStackable;
+            Game.Instance.Player.Inventory.ForceStackable = ForceStacking;
+        }
+
+        public void OnAreaScenesLoaded()
+        {
+
+        }
+
+        public static void ToggleForceStacking()
+        {
+            ForceStacking = !ForceStacking;
+
+            Game.Instance.Player.Inventory.ForceStackable = ForceStacking;
+        }
+
+        public void HandleModEnable()
+        {
+            EventBus.Subscribe(this);
+        }
+
+        public void HandleModDisable()
+        {
+            EventBus.Unsubscribe(this);
         }
     }
 }

@@ -9,5 +9,11 @@ namespace InventoryTweaks.Utilities
             get => Mod.Settings.localizationFileName;
             set => Mod.Settings.localizationFileName = value;
         }
+
+        public static bool ForceStacking
+        {
+            get => Mod.Settings.forceStatcking;
+            set => Mod.Settings.forceStatcking = value;
+        }
     }
 }
