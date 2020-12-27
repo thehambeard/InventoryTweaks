@@ -121,23 +121,23 @@ namespace InventoryTweaks.UI
         private void HandleToggleScrolls()
         {
             ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = !_buttonScrolls.ButtonToggle);
-            WandManagerUI.transform.gameObject.SetActive(false);
-            PotionManagerUI.transform.gameObject.SetActive(false);
+            WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle = false);
+            PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle = false);
             //TrashManagerUI.transform.gameObject.SetActive(false);
         }
 
         private void HandleToggleWands()
         {
             ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = false);
-            WandManagerUI.transform.gameObject.SetActive(true);
-            PotionManagerUI.transform.gameObject.SetActive(false);
+            WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle = !_buttonWands.ButtonToggle);
+            PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle = false);
             //TrashManagerUI.transform.gameObject.SetActive(false);
         }
         private void HandleTogglePotions()
         {
             ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = false);
-            WandManagerUI.transform.gameObject.SetActive(false);
-            PotionManagerUI.transform.gameObject.SetActive(true);
+            WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle = false);
+            PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle = !_buttonPotions.ButtonToggle);
             //TrashManagerUI.transform.gameObject.SetActive(false);
         }
         private void HandleToggleTrash()

@@ -29,7 +29,7 @@ namespace InventoryTweaks.UI
         private RectTransform _rectBackground;
 
         private float _lastTime;
-        private float _delay = 5;
+        private float _delay = 1;
         private float _scale;
         public UsableItemType UseableType { get; set; }
 
