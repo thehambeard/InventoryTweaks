@@ -1,5 +1,6 @@
 ﻿using Kingmaker;
 using Kingmaker.Blueprints.Items.Equipment;
+using Kingmaker.GameModes;
 using Kingmaker.UI;
 using Kingmaker.UI.Constructor;
 using Kingmaker.UI.Log;
@@ -155,6 +156,22 @@ namespace InventoryTweaks.UI
 
         void Update()
         {
+            if (Game.Instance.CurrentMode == GameModeType.Default || 
+                Game.Instance.CurrentMode == GameModeType.EscMode ||
+                Game.Instance.CurrentMode == GameModeType.Pause)
+            {
+                PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle);
+                WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle);
+                ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle);
+                _togglePanel.transform.gameObject.SetActive(true);
+            }
+            else
+            {
+                ScrollManagerUI.transform.gameObject.SetActive(false);
+                WandManagerUI.transform.gameObject.SetActive(false);
+                PotionManagerUI.transform.gameObject.SetActive(false);
+                _togglePanel.transform.gameObject.SetActive(false);
+            }
         }
 
         private class ButtonWrapper
