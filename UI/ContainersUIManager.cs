@@ -56,6 +56,7 @@ namespace InventoryTweaks.UI
             rectButton.anchorMax = new Vector2(0f, 1f);
             rectButton.pivot = new Vector2(0f, 0f);
             rectButton.localPosition = new Vector3(0 - rectButton.rect.width * 1.08f, 0 - rectTweakContainer.rect.yMax * 6.85f, 0);
+            rectButton.localScale = new Vector3(1.04f, 1f, 1f);
 
             rectButton.rotation = Quaternion.identity;
             DestroyImmediate(togglePanel.GetComponent<LogToggleManager>());
