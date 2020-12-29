@@ -37,11 +37,12 @@ namespace InventoryTweaks.UI
             containers.transform.SetSiblingIndex(0);
 
             RectTransform rectTweakContainer = (RectTransform)containers.transform;
-            rectTweakContainer.anchorMin = new Vector2(0f, 1f);
-            rectTweakContainer.anchorMax = new Vector2(0f, 1f);
-            rectTweakContainer.pivot = new Vector2(0f, 0f);
+            float ascpectRatio = (float)Screen.width / (float)Screen.height;
+            rectTweakContainer.anchorMin = new Vector2(0.0f, 0.0f);
+            rectTweakContainer.anchorMax = new Vector2(0.0f, 0.0f);
+            rectTweakContainer.pivot = new Vector2(0.0f, 0.0f);
             rectTweakContainer.position = Camera.current.ScreenToWorldPoint
-                (new Vector3(Screen.width * 0.27f, Screen.height * 0.61f, Camera.current.WorldToScreenPoint(hud.transform.position).z));
+                (new Vector3(Screen.width * 0.27f, (Screen.height * 0.61f) * (ascpectRatio * 0.5625f) , Camera.current.WorldToScreenPoint(hud.transform.position).z));
             rectTweakContainer.position -= rectTweakContainer.forward;
             rectTweakContainer.rotation = Quaternion.identity;
             rectTweakContainer.localScale = new Vector3(.8f, .8f, .8f);
