@@ -16,7 +16,7 @@ namespace InventoryTweaks
         public int Priority => 200;
         public ContainersUIController UI { get; internal set; }
 
-        private Version resetAfter = new Version(0, 0, 0);
+        private Version resetAfter = new Version(2, 0, 0);
 
         public void ResetSettings()
         {
