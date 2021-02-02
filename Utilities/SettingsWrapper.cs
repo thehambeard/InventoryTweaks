@@ -15,5 +15,17 @@ namespace InventoryTweaks.Utilities
             get => Mod.Settings.forceStatcking;
             set => Mod.Settings.forceStatcking = value;
         }
+
+        public static float Menu_X
+        {
+            get => Mod.Settings.menu_x;
+            set => Mod.Settings.menu_x = value;
+        }
+
+        public static float Menu_Y
+        {
+            get => Mod.Settings.menu_y;
+            set => Mod.Settings.menu_y = value;
+        }
     }
 }

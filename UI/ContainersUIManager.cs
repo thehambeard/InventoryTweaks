@@ -2,6 +2,7 @@
 using Kingmaker.Blueprints.Items.Equipment;
 using Kingmaker.GameModes;
 using Kingmaker.UI;
+using Kingmaker.UI.Common;
 using Kingmaker.UI.Constructor;
 using Kingmaker.UI.Log;
 using System.Reflection;
@@ -9,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using InventoryTweaks.Utilities;
 
 namespace InventoryTweaks.UI
 {
@@ -23,10 +25,14 @@ namespace InventoryTweaks.UI
         private ButtonWrapper _buttonWands;
         private ButtonWrapper _buttonPotions;
         private ButtonWrapper _buttonTrash;
+        private static float _menu_step = .001f;
+        private static GameObject hud; 
+
         public static ContainersUIManager CreateObject()
         {
+            Main.Mod.Debug(MethodBase.GetCurrentMethod());
             UICommon uiCommon = Game.Instance.UI.Common;
-            GameObject hud = uiCommon?.transform.Find("HUDLayout")?.gameObject;
+            hud = uiCommon?.transform.Find("HUDLayout")?.gameObject;
             GameObject tooglePanel = uiCommon?.transform.Find("HUDLayout/CombatLog/TooglePanel")?.gameObject;
 
             if (!tooglePanel || !hud)
@@ -37,13 +43,10 @@ namespace InventoryTweaks.UI
             containers.transform.SetSiblingIndex(0);
 
             RectTransform rectTweakContainer = (RectTransform)containers.transform;
-            float ascpectRatio = (float)Screen.width / (float)Screen.height;
+
             rectTweakContainer.anchorMin = new Vector2(0.0f, 0.0f);
             rectTweakContainer.anchorMax = new Vector2(0.0f, 0.0f);
             rectTweakContainer.pivot = new Vector2(0.0f, 0.0f);
-            rectTweakContainer.position = Camera.current.ScreenToWorldPoint
-                (new Vector3(Screen.width * 0.27f, (Screen.height * 0.61f) * (ascpectRatio * 0.5625f) , Camera.current.WorldToScreenPoint(hud.transform.position).z));
-            rectTweakContainer.position -= rectTweakContainer.forward;
             rectTweakContainer.rotation = Quaternion.identity;
             rectTweakContainer.localScale = new Vector3(.8f, .8f, .8f);
 
@@ -86,6 +89,8 @@ namespace InventoryTweaks.UI
         {
             Main.Mod.Debug(MethodBase.GetCurrentMethod());
 
+            gameObject.transform.position = SetMenuPosition(SettingsWrapper.Menu_X, SettingsWrapper.Menu_Y, hud.transform.position);
+            gameObject.transform.position -= gameObject.transform.forward;
             //scroll ui
             ScrollManagerUI = ContainerTypeUIManager.CreateObject();
             ScrollManagerUI.UseableType = UsableItemType.Scroll;
@@ -121,6 +126,13 @@ namespace InventoryTweaks.UI
             _canvasGroup.alpha = 1f;
         }
 
+        private static Vector3 SetMenuPosition(float x, float y, Vector3 z)
+        {
+            float ascpectRatio = (float)Screen.width / (float)Screen.height;
+            return Camera.current.ScreenToWorldPoint
+                (new Vector3(Screen.width * x, (Screen.height * y) * (ascpectRatio * 0.5625f), Camera.current.WorldToScreenPoint(z).z));
+        }
+
         private void HandleToggleScrolls()
         {
             ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle = !_buttonScrolls.ButtonToggle);
@@ -151,10 +163,6 @@ namespace InventoryTweaks.UI
             //TrashManagerUI.transform.gameObject.SetActive(true);
         }
 
-        private void HandleScrollClick()
-        {
-
-        }
 
         void Update()
         {
@@ -162,10 +170,28 @@ namespace InventoryTweaks.UI
                 Game.Instance.CurrentMode == GameModeType.EscMode ||
                 Game.Instance.CurrentMode == GameModeType.Pause)
             {
+                if (Menus.MainMenu.MoveToggle)
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+                        SettingsWrapper.Menu_X -= _menu_step;
+                    else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+                        SettingsWrapper.Menu_X += _menu_step;
+                    else if (Input.GetKeyDown(KeyCode.Alpha8) || Input.GetKeyDown(KeyCode.Keypad8))
+                        SettingsWrapper.Menu_Y += _menu_step;
+                    else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+                        SettingsWrapper.Menu_Y -= _menu_step;
+                    else if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+                        _menu_step *= 2f;
+                    else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1) && _menu_step > .001f)
+                        _menu_step /= 2f;
+
+                    gameObject.transform.position = SetMenuPosition(SettingsWrapper.Menu_X, SettingsWrapper.Menu_Y, hud.transform.position); 
+                }
                 PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle);
                 WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle);
                 ScrollManagerUI.transform.gameObject.SetActive(_buttonScrolls.ButtonToggle);
                 _togglePanel.transform.gameObject.SetActive(true);
+
             }
             else
             {

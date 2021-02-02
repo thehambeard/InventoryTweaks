@@ -79,7 +79,6 @@ namespace InventoryTweaks.UI
             FixMutlipleSelected();
             var wielder = UIUtility.GetCurrentCharacter().Descriptor;
 
-            Mod.Debug(GroupController.Instance.GetCurrentCharacter());
             Item.OnDidEquipped(wielder);
             if (Item.Ability.Data.TargetAnchor != AbilityTargetAnchor.Owner)
             {

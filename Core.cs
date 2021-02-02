@@ -4,26 +4,28 @@ using Kingmaker.PubSubSystem;
 using ModMaker;
 using System;
 using System.Reflection;
+using UnityModManagerNet;
 using static InventoryTweaks.Common;
 using static InventoryTweaks.Main;
 using static InventoryTweaks.Utilities.SettingsWrapper;
 
 namespace InventoryTweaks
 {
-    class Core :
+    class Core : 
         IModEventHandler
     {
-        public int Priority => 200;
+        public int Priority => 100;
         public ContainersUIController UI { get; internal set; }
 
-        private Version resetAfter = new Version(2, 0, 0);
-
+        private Version NeedsReset = new Version(0, 1, 5);
         public void ResetSettings()
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
-            Mod.Settings.lastModVersion = Mod.Version.ToString();
+            Mod.Settings.lastReset = Mod.Version.ToString();
             LocalizationFileName = Local.FileName;
             ForceStacking = true;
+            Menu_X = 0.27f;
+            Menu_Y = 0.61f;
         }
 
         public void HandleModEnable()
@@ -36,15 +38,8 @@ namespace InventoryTweaks
                 Local.Import(LocalizationFileName, e => Mod.Error(e));
                 LocalizationFileName = Local.FileName;
             }
-            if (!Version.TryParse(Mod.Settings.lastModVersion, out Version version) || version > resetAfter)
+            if (!Version.TryParse(Mod.Settings.lastReset, out Version version) || (version < NeedsReset))
                 ResetSettings();
-            else
-            {
-                Mod.Settings.lastModVersion = Mod.Version.ToString();
-            }
-
-
-
             EventBus.Subscribe(this);
         }
 
