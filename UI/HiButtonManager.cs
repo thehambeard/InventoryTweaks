@@ -3,7 +3,6 @@ using Kingmaker.Items;
 using Kingmaker.PubSubSystem;
 using Kingmaker.UI.Common;
 using Kingmaker.UI.Constructor;
-using Kingmaker.UI.Group;
 using Kingmaker.UI.Journal;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Commands;
@@ -12,7 +11,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static InventoryTweaks.Main;
 
 namespace InventoryTweaks.UI
 {

@@ -1,9 +1,7 @@
-﻿using Kingmaker;
-using Kingmaker.PubSubSystem;
+﻿using Kingmaker.PubSubSystem;
 using ModMaker;
 using ModMaker.Utility;
 using System.Reflection;
-using UnityEngine;
 using static InventoryTweaks.Main;
 
 namespace InventoryTweaks.UI

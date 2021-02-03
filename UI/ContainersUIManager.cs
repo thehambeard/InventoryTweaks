@@ -1,8 +1,8 @@
-﻿using Kingmaker;
+﻿using InventoryTweaks.Utilities;
+using Kingmaker;
 using Kingmaker.Blueprints.Items.Equipment;
 using Kingmaker.GameModes;
 using Kingmaker.UI;
-using Kingmaker.UI.Common;
 using Kingmaker.UI.Constructor;
 using Kingmaker.UI.Log;
 using System.Reflection;
@@ -10,7 +10,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using InventoryTweaks.Utilities;
 
 namespace InventoryTweaks.UI
 {
@@ -26,7 +25,7 @@ namespace InventoryTweaks.UI
         private ButtonWrapper _buttonPotions;
         private ButtonWrapper _buttonTrash;
         private static float _menu_step = .001f;
-        private static GameObject hud; 
+        private static GameObject hud;
 
         public static ContainersUIManager CreateObject()
         {
@@ -166,7 +165,7 @@ namespace InventoryTweaks.UI
 
         void Update()
         {
-            if (Game.Instance.CurrentMode == GameModeType.Default || 
+            if (Game.Instance.CurrentMode == GameModeType.Default ||
                 Game.Instance.CurrentMode == GameModeType.EscMode ||
                 Game.Instance.CurrentMode == GameModeType.Pause)
             {
@@ -185,7 +184,7 @@ namespace InventoryTweaks.UI
                     else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1) && _menu_step > .001f)
                         _menu_step /= 2f;
 
-                    gameObject.transform.position = SetMenuPosition(SettingsWrapper.Menu_X, SettingsWrapper.Menu_Y, hud.transform.position); 
+                    gameObject.transform.position = SetMenuPosition(SettingsWrapper.Menu_X, SettingsWrapper.Menu_Y, hud.transform.position);
                 }
                 PotionManagerUI.transform.gameObject.SetActive(_buttonPotions.ButtonToggle);
                 WandManagerUI.transform.gameObject.SetActive(_buttonWands.ButtonToggle);

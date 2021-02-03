@@ -4,14 +4,13 @@ using Kingmaker.PubSubSystem;
 using ModMaker;
 using System;
 using System.Reflection;
-using UnityModManagerNet;
 using static InventoryTweaks.Common;
 using static InventoryTweaks.Main;
 using static InventoryTweaks.Utilities.SettingsWrapper;
 
 namespace InventoryTweaks
 {
-    class Core : 
+    class Core :
         IModEventHandler
     {
         public int Priority => 100;
@@ -23,7 +22,7 @@ namespace InventoryTweaks
             Mod.Debug(MethodBase.GetCurrentMethod());
             Mod.Settings.lastReset = Mod.Version.ToString();
             LocalizationFileName = Local.FileName;
-            ForceStacking = true;
+            ForceStacking = false;
             Menu_X = 0.27f;
             Menu_Y = 0.61f;
         }
